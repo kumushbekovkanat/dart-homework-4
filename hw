@@ -1,0 +1,162 @@
+# dart-homework
+
+Map<String, int> students = {
+'Almaz': 85,
+'Timur': 92,
+'Kanat': 45,
+'Ulukbek': 75,
+'Arafat': 60,
+};
+
+void showStudents() {
+if (students.isEmpty) {
+print('The list is empty');
+return;
+}
+
+for (var entry in students.entries) {
+String status = getGradeStatus(entry.value);
+print('${entry.key}: ${entry.value} ($status)');
+}
+}
+
+String getGradeStatus(int grade) {
+if (grade >= 90 && grade <= 100) {
+return 'Excellent';
+}
+if (grade >= 70 && grade <= 89) {
+return 'Good';
+}
+if (grade >= 50 && grade <= 69) {
+return 'Satisfactory';
+}
+if (grade >= 0 && grade <= 49) {
+return 'Unsatisfactory';
+}
+return 'Invalid grade';
+}
+
+double calculateAverage() {
+if (students.isEmpty) {
+return 0;
+}
+
+int total = 0;
+for (int grade in students.values) {
+total += grade;
+}
+return total / students.length;
+}
+
+void findStudent(String name) {
+if (!students.containsKey(name)) {
+print('Student not found');
+return;
+}
+
+int grade = students[name]!;
+String status = getGradeStatus(grade);
+print('$name: $grade ($status)');
+}
+
+// add new student with basic checks
+void addStudent(String name, int grade) {
+if (name.trim().isEmpty) {
+print('Name cannot be empty');
+return;
+}
+if (students.containsKey(name)) {
+print('This student already exists');
+return;
+}
+if (grade < 0 || grade > 100) {
+print('Grade must be between 0 and 100');
+return;
+}
+
+students[name] = grade;
+print('Added: $name ($grade)');
+}
+
+void removeStudent(String name) {
+if (students.containsKey(name)) {
+students.remove(name);
+print('Removed: $name');
+} else {
+print('Student not found');
+}
+}
+
+void showTopStudent() {
+if (students.isEmpty) {
+print('The list is empty');
+return;
+}
+
+String topName = '';
+int maxGrade = -1;
+
+students.forEach((name, grade) {
+if (grade > maxGrade) {
+maxGrade = grade;
+topName = name;
+}
+});
+
+print('Top student: $topName ($maxGrade)');
+}
+
+List<String> getGoodStudents() {
+List<String> result = [];
+for (var entry in students.entries) {
+if (entry.value >= 70) {
+result.add(entry.key);
+}
+}
+return result;
+}
+
+void main() {
+List<int> commands = [1, 2, 3, 4, 7, 8, 6, 5];
+int index = 0;
+bool running = true;
+
+while (running && index < commands.length) {
+print('\nGradebook');
+print('1. Show all students');
+print('2. Find a student');
+print('3. Add a student');
+print('4. Show average grade');
+print('5. Exit');
+print('6. Remove a student');
+print('7. Top student');
+print('8. Students with a score of 70 and above');
+
+int choice = commands[index];
+index++;
+print('Selected: $choice');
+
+if (choice == 1) {
+  showStudents();
+} else if (choice == 2) {
+  findStudent('Timur');
+} else if (choice == 3) {
+  addStudent('Daniyar', 88);
+} else if (choice == 4) {
+  double avg = calculateAverage();
+  print('Average grade: ${avg.toStringAsFixed(2)}');
+} else if (choice == 5) {
+  print('Exiting');
+  running = false;
+} else if (choice == 6) {
+  removeStudent('Kanat');
+} else if (choice == 7) {
+  showTopStudent();
+} else if (choice == 8) {
+  List<String> good = getGoodStudents();
+  print(good);
+} else {
+  print('Invalid choice');
+}
+}
+}
